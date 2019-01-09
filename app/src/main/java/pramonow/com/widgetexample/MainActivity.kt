@@ -6,6 +6,13 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
+import android.support.v4.view.accessibility.AccessibilityEventCompat.setAction
+import android.content.Intent
+import android.widget.Button
+import android.widget.EditText
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,6 +20,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        var editText = findViewById<EditText>(R.id.edit_texy)
+        var button = findViewById<Button>(R.id.button)
+
+        val intent = Intent(this, SampleWidget::class.java)
+        intent.action = "ACTIVITY_ACTION"
+
+        button.setOnClickListener { View ->
+            val ids = AppWidgetManager.getInstance(application).getAppWidgetIds(ComponentName(application,SampleWidget::class.java))
+            intent.putExtra("name", editText.text.toString())
+            sendBroadcast(intent)}
 
     }
 }

@@ -40,16 +40,24 @@ class SampleWidget : AppWidgetProvider() {
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
-        Log.d("BANIWIDGET","received")
-        if (ACTION_SIMPLEAPPWIDGET.equals(intent.action)) {
-            Log.d("BANIWIDGET","action!")
-            // Construct the RemoteViews object
+
+        if ((intent.action.equals(ACTION_SIMPLEAPPWIDGET))) {
             val views = RemoteViews(context.packageName, R.layout.sample_widget)
             views.setTextViewText(R.id.widget_button, "HIT ME AGAIN!")
-            // This time we dont have widgetId. Reaching our widget with that way.
             val appWidget = ComponentName(context, SampleWidget::class.java!!)
             val appWidgetManager = AppWidgetManager.getInstance(context)
-            // Instruct the widget manager to update the widget
+
+            appWidgetManager.updateAppWidget(appWidget, views)
+        }
+        else if ((intent.action.equals("ACTIVITY_ACTION"))) {
+            val views = RemoteViews(context.packageName, R.layout.sample_widget)
+
+            val text = intent.getStringExtra("name")
+
+            views.setTextViewText(R.id.widget_button, text)
+            val appWidget = ComponentName(context, SampleWidget::class.java!!)
+            val appWidgetManager = AppWidgetManager.getInstance(context)
+
             appWidgetManager.updateAppWidget(appWidget, views)
         }
     }
@@ -61,20 +69,16 @@ class SampleWidget : AppWidgetProvider() {
         views.setTextViewText(R.id.appwidget_text, "BANI WAS HERE")
 
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"))
-        // In widget we are not allowing to use intents as usually. We have to use PendingIntent instead of 'startActivity'
         val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
-        // Here the basic operations the remote view can do.
         views.setOnClickPendingIntent(R.id.widget_button, pendingIntent)
 
         // Construct an Intent which is pointing this class.
         val intentTwo = Intent(context, SampleWidget::class.java)
         intentTwo.action = ACTION_SIMPLEAPPWIDGET
-        // And this time we are sending a broadcast with getBroadcast
         val pendingIntentTwo = PendingIntent.getBroadcast(context, 0, intentTwo, PendingIntent.FLAG_UPDATE_CURRENT)
 
         //views.setOnClickPendingIntent(R.id.widget_button, pendingIntent)
         views.setOnClickPendingIntent(R.id.widget_button, pendingIntentTwo)
-
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views)
