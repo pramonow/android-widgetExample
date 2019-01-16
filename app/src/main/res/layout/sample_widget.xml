@@ -22,4 +22,11 @@
         android:text="HIT ME"
         android:id="@+id/widget_button"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="OPEN GOOGLE PLEASE"
+        android:id="@+id/google_button"/>
+
 </LinearLayout>
