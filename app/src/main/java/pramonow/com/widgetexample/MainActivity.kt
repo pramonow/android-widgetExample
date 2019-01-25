@@ -13,21 +13,21 @@ import android.content.Intent
 import android.widget.Button
 import android.widget.EditText
 
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var editText = findViewById<EditText>(R.id.edit_texy)
+        var editText = findViewById<EditText>(R.id.edit_text)
         var button = findViewById<Button>(R.id.button)
 
         val intent = Intent(this, SampleWidget::class.java)
         intent.action = "ACTIVITY_ACTION"
 
+        //This action will send broadcast to update the widget
         button.setOnClickListener { View ->
-            val ids = AppWidgetManager.getInstance(application).getAppWidgetIds(ComponentName(application,SampleWidget::class.java))
+            AppWidgetManager.getInstance(application).getAppWidgetIds(ComponentName(application,SampleWidget::class.java))
             intent.putExtra("name", editText.text.toString())
             sendBroadcast(intent)}
 

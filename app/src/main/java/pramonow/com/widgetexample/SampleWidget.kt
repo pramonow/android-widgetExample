@@ -10,32 +10,31 @@ import android.content.Intent
 import android.net.Uri
 import android.content.ComponentName
 
-
-
-
 /**
  * Implementation of App Widget functionality.
  */
+
 class SampleWidget : AppWidgetProvider() {
 
     private val ACTION_SIMPLEAPPWIDGET = "ACTION_BROADCASTWIDGETSAMPLE"
+    private val WIDGET_TAG = "SAMPLE_WIDGET_TAG"
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         // There may be multiple widgets active, so update all of them
         for (appWidgetId in appWidgetIds) {
-            Log.d("WIDGETSAMPLE","update")
+            Log.d(WIDGET_TAG,"update")
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }
     }
 
     override fun onEnabled(context: Context) {
         // Enter relevant functionality for when the first widget is created
-        Log.d("WIDGETSAMPLE","enabled")
+        Log.d(WIDGET_TAG,"enabled")
     }
 
     override fun onDisabled(context: Context) {
         // Enter relevant functionality for when the last widget is disabled
-        Log.d("WIDGETSAMPLE","disabled")
+        Log.d(WIDGET_TAG,"disabled")
     }
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -79,7 +78,6 @@ class SampleWidget : AppWidgetProvider() {
         val intentTwo = Intent(context, SampleWidget::class.java)
         intentTwo.action = ACTION_SIMPLEAPPWIDGET
         val pendingIntentTwo = PendingIntent.getBroadcast(context, 0, intentTwo, PendingIntent.FLAG_UPDATE_CURRENT)
-
 
         views.setOnClickPendingIntent(R.id.google_button, pendingIntent)
         views.setOnClickPendingIntent(R.id.widget_button, pendingIntentTwo)
